@@ -1,10 +1,12 @@
 const result = document.getElementById('result');
 let digit = document.querySelectorAll('.digit');
 let op = document.querySelectorAll('.op');
+const clearBtn = document.querySelector('.clear');
 let currVal = '';
 let currOp = '';
 let operand = 0;
 let opQueue ='';
+let tempVal = 0;
 
 digit.forEach(item => {
     item.addEventListener('click', digitInput);
@@ -12,6 +14,8 @@ digit.forEach(item => {
 op.forEach(item => {
     item.addEventListener('click', operate);
 })
+
+clearBtn.addEventListener('click', clear);
 
 function digitInput(e) {
     currVal += e.target.innerText;
@@ -29,7 +33,7 @@ function operate(e) {
         currVal = '';
     }
     else {
-        let tempVal = parseInt(currVal);
+        tempVal = parseInt(currVal);
         calculate(operand, tempVal);
         opQueue = currOp;
         console.log(opQueue);
@@ -52,9 +56,6 @@ function calculate(a, b) {
     else if (opQueue == '=') {
         equals();
     }
-    else if (opQueue == 'Clear') {
-        clear();
-    }
 }
 
 function add(a,b) {
@@ -67,8 +68,6 @@ function add(a,b) {
     }
     operand = sum;
     currVal = '';
-    // console.log('added sum', sum);
-    // console.log('added currVal', currVal);
 }
 
 function subtract(a,b) {
@@ -108,11 +107,11 @@ function divide(a,b) {
 }
 
 function equals() {
-    result.innerText = operand;
+    result.innerText = tempVal;
 }
 
 function clear() {
-    result.innerText = '';
+    result.innerText = '0';
     currVal = '';
     operand = 0;
     opQueue = '';
