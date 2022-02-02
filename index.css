@@ -46,7 +46,8 @@ body {
 #result {
     position:absolute;
     color: white;
-    font-size:4rem;
+    font-size:8rem;
+    font-weight:300;
     bottom:0;
     right:0;
     padding-right:2rem;
@@ -75,6 +76,12 @@ body {
     grid-column: span 2;
     text-align: left;
     padding-left: 3rem;
+}
+
+.clear {
+    grid-column: span 3;
+    text-align: left;
+    padding-left:3rem;
 }
 
 .top-row {
