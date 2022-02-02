@@ -6,7 +6,7 @@ let op = document.querySelectorAll('.op');
 let currVal = '';
 let currOp = '';
 let operand = 0;
-let opQueue ='';
+let opQueue = [];
 let tempVal = 0;
 
 digit.forEach(item => {
@@ -26,19 +26,27 @@ function digitInput(e) {
 
 function operate(e) {
     currOp = e.target.innerText;
-    if (opQueue == '') {
-        opQueue = currOp;
-        operand = parseFloat(currVal);
-        console.log(operand);
-        console.log(opQueue);
-        console.log(currVal);
-        currVal = '';
+    opQueue.push(currVal);
+    opQueue.push(currOp);
+    if (opQueue.length == 2) {
+            operand = parseFloat(currVal);
+            currVal = '';
+    }
+    else if ((opQueue[opQueue.length-2] == '') && ((opQueue[opQueue.length-1] == '+') || 
+        (opQueue[opQueue.length-1] == '-') ||
+        (opQueue[opQueue.length-1] == 'x') ||
+        (opQueue[opQueue.length-1] == '÷') ||
+        (opQueue[opQueue.length-1] == '='))) {
+            opQueue.pop();
+            opQueue.pop();
+            opQueue[opQueue.length-1] = currOp;
+            tempVal = parseFloat(currVal);
+            currVal = '';
     }
     else {
         tempVal = parseFloat(currVal);
+        currVal = '';
         calculate(operand, tempVal);
-        opQueue = currOp;
-        console.log(opQueue);
     }
 }
 
@@ -48,23 +56,23 @@ function appendPoint() {
     }
     else if (currVal.includes('.')) return;
     currVal += '.';
-    console.log(currVal);
 }
 
 function calculate(a, b) {
-    if (opQueue == '+') {
+    let opIndex = opQueue[opQueue.length - 3];
+    if (opIndex == '+') {
         add(a,b);
     }
-    else if (opQueue == '-') {
+    else if (opIndex == '-') {
         subtract(a,b);
     }
-    else if (opQueue == 'x') {
+    else if (opIndex == 'x') {
         multiply(a,b);
     }
-    else if (opQueue == '÷') {
+    else if (opIndex == '÷') {
         divide(a,b);
     }
-    else if (opQueue == '=') {
+    else if (opIndex == '=') {
         equals();
     }
 }
@@ -111,8 +119,9 @@ function divide(a,b) {
         result.innerText = 'really bruh';
         currVal = '';
         operand = 0;
-        opQueue = '';
+        opQueue = [];
         currOp = '';
+        tempVal = 0;
     }
     else if (quotient%1 != 0) {
         result.innerText = quotient.toFixed(3); 
@@ -124,14 +133,20 @@ function divide(a,b) {
     currVal = '';
 }
 
-function equals() {
-    result.innerText = tempVal;
+function equals(a,b) {
+    if(b != 0) {
+        result.innerText = operand;
+    }
+    else {
+        result.innerText = tempVal;
+    }
 }
 
 function clear() {
     result.innerText = '0';
     currVal = '';
     operand = 0;
-    opQueue = '';
+    opQueue = [];
     currOp = '';
+    tempVal = 0;
 }
