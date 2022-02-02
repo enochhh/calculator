@@ -1,7 +1,8 @@
 const result = document.getElementById('result');
+const clearBtn = document.querySelector('.clear');
+const decimal = document.querySelector('.point');
 let digit = document.querySelectorAll('.digit');
 let op = document.querySelectorAll('.op');
-const clearBtn = document.querySelector('.clear');
 let currVal = '';
 let currOp = '';
 let operand = 0;
@@ -16,6 +17,7 @@ op.forEach(item => {
 })
 
 clearBtn.addEventListener('click', clear);
+decimal.addEventListener('click', appendPoint);
 
 function digitInput(e) {
     currVal += e.target.innerText;
@@ -26,20 +28,29 @@ function operate(e) {
     currOp = e.target.innerText;
     if (opQueue == '') {
         opQueue = currOp;
-        operand = parseInt(currVal);
+        operand = parseFloat(currVal);
         console.log(operand);
         console.log(opQueue);
         console.log(currVal);
         currVal = '';
     }
     else {
-        tempVal = parseInt(currVal);
+        tempVal = parseFloat(currVal);
         calculate(operand, tempVal);
         opQueue = currOp;
         console.log(opQueue);
     }
 }
-//CURRENTLY CANNOT DO OPERATIONS WITH USER INPUTTED DECIMALS
+
+function appendPoint() {
+    if(currVal == '') {
+        currVal += '0';
+    }
+    else if (currVal.includes('.')) return;
+    currVal += '.';
+    console.log(currVal);
+}
+
 function calculate(a, b) {
     if (opQueue == '+') {
         add(a,b);
@@ -96,7 +107,14 @@ function multiply(a,b) {
 
 function divide(a,b) {
     const quotient = (a/b);
-    if (quotient%1 != 0) {
+    if(b == 0) {
+        result.innerText = 'really bruh';
+        currVal = '';
+        operand = 0;
+        opQueue = '';
+        currOp = '';
+    }
+    else if (quotient%1 != 0) {
         result.innerText = quotient.toFixed(3); 
     }
     else {
