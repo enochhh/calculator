@@ -58,6 +58,10 @@ function appendPoint() {
     currVal += '.';
 }
 
+function roundNum(num) {
+    return Math.round(num*1000)/1000;
+}
+
 function calculate(a, b) {
     let opIndex = opQueue[opQueue.length - 3];
     if (opIndex == '+') {
@@ -78,43 +82,28 @@ function calculate(a, b) {
 }
 
 function add(a,b) {
-    const sum = (a + b);
-    if (sum%1 != 0) {
-        result.innerText = sum.toFixed(3);
-    }
-    else {
-        result.innerText = sum;
-    }
+    const sum = roundNum(a + b);
+    result.innerText = sum;
     operand = sum;
     currVal = '';
 }
 
 function subtract(a,b) {
-    const diff = (a - b);
-    if (diff%1 != 0) {
-        result.innerText = diff.toFixed(3);
-    }
-    else {
-        result.innerText = diff;
-    }
+    const diff = roundNum(a - b);
+    result.innerText = diff;
     operand = diff;
     currVal = '';
 }
 
 function multiply(a,b) {
-    const prod = (a * b);
-    if (prod%1 != 0) {
-        result.innerText = prod.toFixed(3);
-    }
-    else {
-        result.innerText = prod;
-    }
+    const prod = roundNum(a * b);
+    result.innerText = prod;
     operand = prod;
     currVal = '';
 }
 
 function divide(a,b) {
-    const quotient = (a/b);
+    const quotient = roundNum(a/b);
     if(b == 0) {
         result.innerText = 'really bruh';
         currVal = '';
@@ -123,14 +112,11 @@ function divide(a,b) {
         currOp = '';
         tempVal = 0;
     }
-    else if (quotient%1 != 0) {
-        result.innerText = quotient.toFixed(3); 
-    }
     else {
         result.innerText = quotient;
+        operand = quotient;
+        currVal = '';
     }
-    operand = quotient;
-    currVal = '';
 }
 
 function equals(a,b) {
